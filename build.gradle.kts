@@ -41,6 +41,8 @@ artifacts {
     add("archives", javadocJar)
 }
 
+val isSnapshot = version.toString().endsWith("-SNAPSHOT")
+
 publishing {
     publications {
         register<MavenPublication>("mavenJava") {
@@ -74,6 +76,21 @@ publishing {
             }
         }
     }
+
+    repositories {
+        val sonatypeUsername: String? by project
+        val sonatypePassword: String? by project
+        if (sonatypeUsername != null && sonatypePassword != null) {
+            val url = if (isSnapshot) "https://oss.sonatype.org/content/repositories/snapshots/"
+                else "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            maven(url) {
+                credentials {
+                    username = sonatypeUsername
+                    password = sonatypePassword
+                }
+            }
+        }
+    }
 }
 
 signing {
@@ -81,7 +98,7 @@ signing {
 }
 
 tasks.withType<Sign> {
-    onlyIf { !version.toString().endsWith("-SNAPSHOT") }
+    onlyIf { !isSnapshot }
 }
 
 operator fun Property<String>.invoke(v: String) = set(v)

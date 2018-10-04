@@ -22,13 +22,13 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at;
+package org.cadixdev.at;
 
-import me.jamiemansfield.bombe.analysis.InheritanceCompletable;
-import me.jamiemansfield.bombe.analysis.InheritanceProvider;
-import me.jamiemansfield.bombe.type.signature.MethodSignature;
-import me.jamiemansfield.lorenz.MappingSet;
-import net.minecrell.at.impl.AccessTransformSetImpl;
+import org.cadixdev.at.impl.AccessTransformSetImpl;
+import org.cadixdev.bombe.analysis.InheritanceCompletable;
+import org.cadixdev.bombe.analysis.InheritanceProvider;
+import org.cadixdev.bombe.type.signature.MethodSignature;
+import org.cadixdev.lorenz.MappingSet;
 
 import java.util.Map;
 import java.util.Optional;

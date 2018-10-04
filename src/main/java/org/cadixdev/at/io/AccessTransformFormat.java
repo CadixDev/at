@@ -22,32 +22,45 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at;
+package org.cadixdev.at.io;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.cadixdev.at.AccessTransformSet;
 
-import me.jamiemansfield.bombe.analysis.InheritanceProvider;
-import me.jamiemansfield.bombe.analysis.ReflectionInheritanceProvider;
-import me.jamiemansfield.bombe.type.signature.MethodSignature;
-import org.junit.jupiter.api.Test;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
-public class AccessTransformInheritanceTest {
+public interface AccessTransformFormat {
 
-    private static final InheritanceProvider INHERITANCE = new ReflectionInheritanceProvider(AccessTransformInheritanceTest.class.getClassLoader());
-
-    @Test
-    public void testAtIfSuperClassWithoutAtMakesInheritableMethodNotVisibleEnough() throws IOException {
-        final MethodSignature helloWorld = MethodSignature.of("helloWorld()V");
-
-        AccessTransformSet ats = AccessTransformSet.create();
-        ats.getOrCreateClass("test.inheritance.a.BaseClass").mergeMethod(helloWorld, AccessTransform.PUBLIC);
-
-        AccessTransformSet.Class testClass = ats.getOrCreateClass("test.inheritance.TestClass");
-        testClass.complete(INHERITANCE);
-
-        assertEquals(testClass.getMethod(helloWorld), AccessTransform.PUBLIC);
+    default AccessTransformSet read(Reader reader) throws IOException {
+        AccessTransformSet set = AccessTransformSet.create();
+        read(reader, set);
+        return set;
     }
+    void read(Reader reader, AccessTransformSet set) throws IOException;
+
+    default AccessTransformSet read(Path path) throws IOException {
+        AccessTransformSet set = AccessTransformSet.create();
+        read(path, set);
+        return set;
+    }
+    default void read(Path path, AccessTransformSet set) throws IOException {
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
+            read(reader, set);
+        }
+    }
+
+    void write(Writer writer, AccessTransformSet set) throws IOException;
+
+    default void write(Path path, AccessTransformSet set) throws IOException {
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            write(writer, set);
+        }
+    }
+
 
 }

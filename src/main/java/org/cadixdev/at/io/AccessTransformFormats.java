@@ -22,9 +22,9 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at.io;
+package org.cadixdev.at.io;
 
-import net.minecrell.at.io.fml.FmlAccessTransformFormat;
+import org.cadixdev.at.io.fml.FmlAccessTransformFormat;
 
 public final class AccessTransformFormats {
 

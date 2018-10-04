@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at;
+package org.cadixdev.at;
 
 public enum ModifierChange {
     NONE,

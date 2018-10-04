@@ -22,12 +22,12 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at.impl;
+package org.cadixdev.at.impl;
 
-import me.jamiemansfield.bombe.analysis.InheritanceProvider;
-import me.jamiemansfield.bombe.type.signature.MethodSignature;
-import net.minecrell.at.AccessTransform;
-import net.minecrell.at.AccessTransformSet;
+import org.cadixdev.at.AccessTransform;
+import org.cadixdev.at.AccessTransformSet;
+import org.cadixdev.bombe.analysis.InheritanceProvider;
+import org.cadixdev.bombe.type.signature.MethodSignature;
 
 import java.util.Collections;
 import java.util.HashMap;

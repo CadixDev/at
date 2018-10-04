@@ -22,14 +22,14 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at.impl;
+package org.cadixdev.at.impl;
 
-import me.jamiemansfield.lorenz.MappingSet;
-import me.jamiemansfield.lorenz.model.ClassMapping;
-import me.jamiemansfield.lorenz.model.FieldMapping;
-import me.jamiemansfield.lorenz.model.Mapping;
-import me.jamiemansfield.lorenz.model.MethodMapping;
-import net.minecrell.at.AccessTransformSet;
+import org.cadixdev.at.AccessTransformSet;
+import org.cadixdev.lorenz.MappingSet;
+import org.cadixdev.lorenz.model.ClassMapping;
+import org.cadixdev.lorenz.model.FieldMapping;
+import org.cadixdev.lorenz.model.Mapping;
+import org.cadixdev.lorenz.model.MethodMapping;
 
 import java.util.Objects;
 import java.util.Optional;

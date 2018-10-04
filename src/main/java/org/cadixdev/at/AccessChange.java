@@ -22,45 +22,44 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at.io;
+package org.cadixdev.at;
 
-import net.minecrell.at.AccessTransformSet;
+import java.lang.reflect.Modifier;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Path;
+public enum AccessChange {
+    NONE(-1),
+    PRIVATE(Modifier.PRIVATE),
+    PACKAGE_PRIVATE(0),
+    PROTECTED(Modifier.PROTECTED),
+    PUBLIC(Modifier.PUBLIC);
 
-public interface AccessTransformFormat {
+    private final int modifier;
 
-    default AccessTransformSet read(Reader reader) throws IOException {
-        AccessTransformSet set = AccessTransformSet.create();
-        read(reader, set);
-        return set;
+    AccessChange(int modifier) {
+        this.modifier = modifier;
     }
-    void read(Reader reader, AccessTransformSet set) throws IOException;
 
-    default AccessTransformSet read(Path path) throws IOException {
-        AccessTransformSet set = AccessTransformSet.create();
-        read(path, set);
-        return set;
+    public int getModifier() {
+        return modifier;
     }
-    default void read(Path path, AccessTransformSet set) throws IOException {
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            read(reader, set);
+
+    public AccessChange merge(AccessChange other) {
+        if (this == other) {
+            return this;
+        } else if (this == NONE) {
+            return other;
+        } else if (other == NONE) {
+            return this;
+        }
+
+        int compare = compareTo(other);
+        if (compare == 0) {
+            return this;
+        } else if (compare < 0) {
+            return other;
+        } else {
+            return this;
         }
     }
-
-    void write(Writer writer, AccessTransformSet set) throws IOException;
-
-    default void write(Path path, AccessTransformSet set) throws IOException {
-        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            write(writer, set);
-        }
-    }
-
 
 }

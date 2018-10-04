@@ -22,13 +22,13 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at.io.fml;
+package org.cadixdev.at.io.fml;
 
-import me.jamiemansfield.bombe.type.signature.MethodSignature;
-import net.minecrell.at.AccessChange;
-import net.minecrell.at.AccessTransform;
-import net.minecrell.at.AccessTransformSet;
-import net.minecrell.at.ModifierChange;
+import org.cadixdev.at.AccessChange;
+import org.cadixdev.at.AccessTransform;
+import org.cadixdev.at.AccessTransformSet;
+import org.cadixdev.at.ModifierChange;
+import org.cadixdev.bombe.type.signature.MethodSignature;
 
 import java.io.BufferedReader;
 import java.io.IOException;

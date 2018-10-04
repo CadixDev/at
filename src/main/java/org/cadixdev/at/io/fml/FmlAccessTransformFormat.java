@@ -22,38 +22,25 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at.io;
+package org.cadixdev.at.io.fml;
 
-import net.minecrell.at.AccessTransformSet;
+import org.cadixdev.at.AccessTransformSet;
+import org.cadixdev.at.io.AbstractAccessTransformFormat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 
-public abstract class AbstractAccessTransformFormat implements AccessTransformFormat {
-
-    protected abstract void read(BufferedReader reader, AccessTransformSet set) throws IOException;
+public class FmlAccessTransformFormat extends AbstractAccessTransformFormat {
 
     @Override
-    public void read(Reader reader, AccessTransformSet set) throws IOException {
-        if (reader instanceof BufferedReader) {
-            read((BufferedReader) reader, set);
-        } else {
-            read(new BufferedReader(reader), set);
-        }
+    public void read(BufferedReader reader, AccessTransformSet set) throws IOException {
+        FmlReader.read(reader, set);
     }
 
-    protected abstract void write(BufferedWriter writer, AccessTransformSet set) throws IOException;
-
     @Override
-    public void write(Writer writer, AccessTransformSet set) throws IOException {
-        if (writer instanceof BufferedWriter) {
-            write((BufferedWriter) writer, set);
-        } else {
-            write(new BufferedWriter(writer), set);
-        }
+    public void write(BufferedWriter writer, AccessTransformSet set) throws IOException {
+        new FmlWriter(writer).write(set);
     }
 
 }

@@ -22,44 +22,32 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at;
+package org.cadixdev.at;
 
-import java.lang.reflect.Modifier;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public enum AccessChange {
-    NONE(-1),
-    PRIVATE(Modifier.PRIVATE),
-    PACKAGE_PRIVATE(0),
-    PROTECTED(Modifier.PROTECTED),
-    PUBLIC(Modifier.PUBLIC);
+import org.cadixdev.bombe.analysis.InheritanceProvider;
+import org.cadixdev.bombe.analysis.ReflectionInheritanceProvider;
+import org.cadixdev.bombe.type.signature.MethodSignature;
+import org.junit.jupiter.api.Test;
 
-    private final int modifier;
+import java.io.IOException;
 
-    AccessChange(int modifier) {
-        this.modifier = modifier;
-    }
+public class AccessTransformInheritanceTest {
 
-    public int getModifier() {
-        return modifier;
-    }
+    private static final InheritanceProvider INHERITANCE = new ReflectionInheritanceProvider(AccessTransformInheritanceTest.class.getClassLoader());
 
-    public AccessChange merge(AccessChange other) {
-        if (this == other) {
-            return this;
-        } else if (this == NONE) {
-            return other;
-        } else if (other == NONE) {
-            return this;
-        }
+    @Test
+    public void testAtIfSuperClassWithoutAtMakesInheritableMethodNotVisibleEnough() throws IOException {
+        final MethodSignature helloWorld = MethodSignature.of("helloWorld()V");
 
-        int compare = compareTo(other);
-        if (compare == 0) {
-            return this;
-        } else if (compare < 0) {
-            return other;
-        } else {
-            return this;
-        }
+        AccessTransformSet ats = AccessTransformSet.create();
+        ats.getOrCreateClass("test.inheritance.a.BaseClass").mergeMethod(helloWorld, AccessTransform.PUBLIC);
+
+        AccessTransformSet.Class testClass = ats.getOrCreateClass("test.inheritance.TestClass");
+        testClass.complete(INHERITANCE);
+
+        assertEquals(testClass.getMethod(helloWorld), AccessTransform.PUBLIC);
     }
 
 }

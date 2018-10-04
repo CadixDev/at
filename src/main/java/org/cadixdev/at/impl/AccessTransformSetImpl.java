@@ -22,10 +22,10 @@
  * THE SOFTWARE.
  */
 
-package net.minecrell.at.impl;
+package org.cadixdev.at.impl;
 
-import me.jamiemansfield.lorenz.MappingSet;
-import net.minecrell.at.AccessTransformSet;
+import org.cadixdev.at.AccessTransformSet;
+import org.cadixdev.lorenz.MappingSet;
 
 import java.util.Collections;
 import java.util.HashMap;

@@ -45,7 +45,9 @@ final class FmlWriter {
     }
 
     void write(AccessTransformSet set) throws IOException {
-        set.getClasses().forEach(throwing((className, classSet) -> {
+        set.getClasses().forEach(throwing((originalClassName, classSet) -> {
+            final String className = originalClassName.replace('/', '.');
+
             writeClass(className, classSet.get());
 
             writeField(className, null, classSet.allFields());

@@ -45,13 +45,13 @@ final class AccessTransformSetMapper {
 
         AccessTransformSet remapped = AccessTransformSet.create();
         set.getClasses().forEach((className, classSet) -> {
-            Optional<? extends ClassMapping<?>> mapping = mappings.getClassMapping(className);
+            Optional<? extends ClassMapping<?, ?>> mapping = mappings.getClassMapping(className);
             remap(mapping, classSet, remapped.getOrCreateClass(mapping.map(Mapping::getFullDeobfuscatedName).orElse(className)));
         });
         return remapped;
     }
 
-    private static void remap(Optional<? extends ClassMapping<?>> mapping,
+    private static void remap(Optional<? extends ClassMapping<?, ?>> mapping,
             AccessTransformSet.Class set, AccessTransformSet.Class remapped) {
         remapped.merge(set.get());
         remapped.mergeAllFields(set.allFields());

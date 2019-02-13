@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    api("org.cadixdev:bombe:0.3.0-SNAPSHOT")
+    api("org.cadixdev:bombe:0.3.0")
     compileOnly("org.cadixdev:lorenz:0.5.0-SNAPSHOT")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")

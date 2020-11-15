@@ -11,12 +11,11 @@ java {
 
 repositories {
     mavenCentral()
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
-    api("org.cadixdev:bombe:0.3.2")
-    compileOnly("org.cadixdev:lorenz:0.5.2")
+    api("org.cadixdev:bombe:0.3.4")
+    compileOnly("org.cadixdev:lorenz:0.5.5")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
@@ -52,7 +51,11 @@ publishing {
             artifact(javadocJar)
 
             pom {
+                val name: String by project
+                val description: String by project
                 val url: String by project
+                name(name)
+                description(description)
                 url(url)
 
                 scm {
@@ -71,6 +74,16 @@ publishing {
                         name("MIT License")
                         url("https://opensource.org/licenses/MIT")
                         distribution("repo")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id("jamierocks")
+                        name("Jamie Mansfield")
+                        email("jmansfield@cadixdev.org")
+                        url("https://www.jamiemansfield.me/")
+                        timezone("Europe/London")
                     }
                 }
             }

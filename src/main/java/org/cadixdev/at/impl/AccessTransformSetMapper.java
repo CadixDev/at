@@ -25,6 +25,7 @@
 package org.cadixdev.at.impl;
 
 import org.cadixdev.at.AccessTransformSet;
+import org.cadixdev.bombe.type.signature.MethodSignature;
 import org.cadixdev.lorenz.MappingSet;
 import org.cadixdev.lorenz.model.ClassMapping;
 import org.cadixdev.lorenz.model.FieldMapping;
@@ -46,24 +47,40 @@ final class AccessTransformSetMapper {
         AccessTransformSet remapped = AccessTransformSet.create();
         set.getClasses().forEach((className, classSet) -> {
             Optional<? extends ClassMapping<?, ?>> mapping = mappings.getClassMapping(className);
-            remap(mapping, classSet, remapped.getOrCreateClass(mapping.map(Mapping::getFullDeobfuscatedName).orElse(className)));
+            remap(mapping.orElse(null), classSet, remapped.getOrCreateClass(mapping.map(Mapping::getFullDeobfuscatedName).orElse(className)));
         });
         return remapped;
     }
 
-    private static void remap(Optional<? extends ClassMapping<?, ?>> mapping,
-            AccessTransformSet.Class set, AccessTransformSet.Class remapped) {
+    private static void remap(ClassMapping<?, ?> mapping, AccessTransformSet.Class set, AccessTransformSet.Class remapped) {
         remapped.merge(set.get());
         remapped.mergeAllFields(set.allFields());
         remapped.mergeAllMethods(set.allMethods());
 
-        set.getFields().forEach((name, transform) ->
-                remapped.mergeField(mapping.flatMap(m -> m.getFieldMapping(name))
-                        .map(FieldMapping::getDeobfuscatedName).orElse(name), transform));
+        if (mapping == null) {
+            set.getFields().forEach(remapped::mergeField);
+            set.getMethods().forEach(remapped::mergeMethod);
+        } else {
+            set.getFields().forEach((name, transform) ->
+                remapped.mergeField(
+                    mapping.getFieldMapping(name)
+                        .map(FieldMapping::getDeobfuscatedName)
+                        .orElse(name),
+                    transform
+                )
+            );
 
-        set.getMethods().forEach((signature, transform) ->
-                remapped.mergeMethod(mapping.flatMap(m -> m.getMethodMapping(signature))
-                        .map(MethodMapping::getDeobfuscatedSignature).orElse(signature), transform));
+            set.getMethods().forEach((signature, transform) -> {
+                remapped.mergeMethod(
+                    mapping.getMethodMapping(signature)
+                        .map(MethodMapping::getDeobfuscatedSignature)
+                        .orElseGet(() -> new MethodSignature(
+                            signature.getName(),
+                            mapping.getMappings().deobfuscate(signature.getDescriptor())
+                        )),
+                    transform
+                );
+            });
+        }
     }
-
 }
